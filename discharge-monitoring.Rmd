@@ -1,0 +1,97 @@
+---
+title: "Discharge Monitoring"
+author: "Tim Foster"
+date: "10 December 2018"
+output: html_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+
+```{r}
+library(sepaTools)
+library(dplyr)
+library(broom)
+
+
+  filePath <- "data/locations.csv"
+  locations <- read.csv(file = filePath) 
+  
+
+ results <-  getEcologyResults(locations = locations$LOCATION_CODE,
+                               analysis = c("F_BMWP_TST",
+                                            "F_BMWP_SUM",
+                                            "SEW_FUNGUS",
+                                            "SURVEY_INV"),
+                               startDate = "01-MARCH-2018",
+                               endDate = "01-NOV-2018")
+
+ 
+results <-  inner_join(locations, results,by = "LOCATION_CODE")
+ 
+# WHPT NTAXA Abund, WHPT ASPT Abund, WHPT Score
+
+results$DATE <- as.Date(results$DATE_TAKEN, "%d/%m/%y")
+
+result <- group_by(results, STW, DATE, DETERMINAND) %>% mutate(COUNT = n())
+
+result <- ungroup(result)
+
+t_test <- lapply(split(result, result$STW), function(result) {
+   
+   upstream = result$VALUE[result$DETERMINAND == "WHPT NTAXA Abund" & 
+                         result$POSITION == "US" &
+                        result$COUNT %in% c(2,8)]
+
+downstream = result$VALUE[result$DETERMINAND == "WHPT NTAXA Abund" & 
+                   result$POSITION == "DS" &
+                      result$COUNT %in% c(2,8)]
+
+test <- NULL
+try(t_test <- t.test(downstream,upstream, var.equal=TRUE, paired = T, alternative = 'l'))
+try(test <- tidy(t_test))
+test$STW <- unique(result$STW)
+
+test$TYPE <- "NTAXA"
+   
+
+   return(test)
+ })
+   
+ntaxa_tests <- bind_rows(t_test)
+   
+
+t_test <- lapply(split(result, result$STW), function(result) {
+   
+   upstream = result$VALUE[result$DETERMINAND == "WHPT ASPT Abund" & 
+                         result$POSITION == "US" &
+                        result$COUNT %in% c(2,8)]
+
+downstream = result$VALUE[result$DETERMINAND == "WHPT ASPT Abund" & 
+                   result$POSITION == "DS" &
+                      result$COUNT %in% c(2,8)]
+
+test <- NULL
+try(t_test <- t.test(downstream,upstream, var.equal=TRUE, paired = T, alternative = 'l'))
+try(test <- tidy(t_test))
+test$STW <- unique(result$STW)
+
+test$TYPE <- "ASPT"
+   
+
+   return(test)
+ })
+   
+aspt_tests <- bind_rows(t_test)
+all <- bind_rows(aspt_tests,ntaxa_tests )
+
+result[result$DETERMINAND == "WHPT ASPT Abund" & result$STW == 13363, ]
+
+
+```
+

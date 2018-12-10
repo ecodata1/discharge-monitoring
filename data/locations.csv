@@ -1,0 +1,85 @@
+LOCATION_CODE,LOCATION_DESCRIPTION,POSITION,STW,CATCHMENT,WBID,SUITABILITY
+13207,"Plean Village STW, Stirling, FK7 8BH",STW,13207,Forth Estuary (South) Coastal,200437,no
+302505,Sauchenford Burn u/s Plean STW (new site),US,302505,Forth Estuary (South) Coastal,200437,no
+3307,SAUCHENFORD BURN D/S PLEAN S.T.W.,DS,302505,Forth Estuary (South) Coastal,200437,no
+311506,"Cumnock STW, Cumnock, Ayrshire, KA18 1RS",STW,311506,River Ayr,10427,Yes
+404874,Lugar Water U/S of Cummock STW,US,311506,River Ayr,10427,Yes
+121646,"LUGAR WATER D/S UNDERWOOD STW, U/S OF A76 ROAD BRIDGE",DS,311506,River Ayr,10427,Yes
+232239,"Persley STW, Persley, Aberdeen, AB22 8AQ",STW,232239,River Don,23265,yes
+532979,"River Don (East Bank), d/s of Bucks Burn conf, u/s of pipe bridge",US,232239,River Don,23265,yes
+484907,River Don d/s of Persley STW,DS,232239,River Don,23265,yes 
+322242,"Joppa STW, Joppa, Coylton, KA6 6LR",STW,322242,River Ayr,10422,yes
+101920,Byres Burn U/S Joppa STW,US,322242,River Ayr,10422,yes
+101931,Byres Burn D/S Joppa STW,DS,322242,River Ayr,10422,yes
+311479,"Strathblane STW, Blanefield, Glasgow, G63 9AL",STW,311479,River Leven (Loch Lomond),10156,yes
+337677,Blane Water u/s Strathblane STW,US,311479,River Leven (Loch Lomond),10156,yes
+121476,Blane Water d/s Strathblane STW,DS,311479,River Leven (Loch Lomond),10156,yes
+13280,"Harthill STW, Harthill, ML7 5SR",STW,13280,River Almond,3031,yes
+414,HOW BURN U/S HARTHILL STW,US,13280,River Almond,3031,yes
+613,HOW BURN D/S HARTHILL STW,DS,13280,River Almond,3031,yes
+13746,"Methven STW, Perth, PH1 3RH",STW,13746,River Tay,6510,yes
+467639,Methven Burn u/s of Methven STW,US,13746,River Tay,6510,yes
+467640,Methven Burn d/s of Methven STW,DS,13746,River Tay,6510,yes
+340630,"Balfron STW, Balfron, Glasgow, G63 0RN",STW,340630,River Leven (Loch Lomond),10153,yes
+476697,Endrick Water u/s of Balfron STW,US,340630,River Leven (Loch Lomond),10153,yes
+533036,"Endrick Water, d/s of Balfron STW at Endrick Cottage",DS,340630,River Leven (Loch Lomond),10153,yes
+205082,"Rothienorman STW, Inverurie, Aberdeenshire, AB51 8UE",STW,205082,River Ythan,23234,yes
+207362,"Fordoun Burn, u/s of Rothienorman STW",US,205082,River Ythan,23234,yes
+207361,Fordoun Burn d/s Rothienorman STW,DS,205082,River Ythan,23234,yes
+127630,"Daldowie STW, Uddingston, Glasgow, G71 7RX",STW,127630,River Clyde,10040,no
+523611,"RIVER CLYDE U/S DALDOWIE STW (CIP2), E OF NEWTON FARM",US,127630,River Clyde,10040,no
+122477,River Clyde @ Clydesmill,DS,127630,River Clyde,10040,no
+13363,"Pathhead STW, Pathhead, EH37 5RE",STW,13363,River Tyne,4001,yes
+4448,R TYNE AT FORD,US,13363,River Tyne,4001,yes
+669,R TYNE D/S PATHHEAD STW,DS,13363,River Tyne,4001,yes
+13682,"Ceres STW, Curling Pond Road, Ceres, Cupar, KY15 5LA",STW,13682,River Eden,6202,yes
+8206,CERES B. U/S CERES STW,US,13682,River Eden,6202,yes
+8207,CERES B. D/S CERES STW,DS,13682,River Eden,6202,yes
+13291,"East Calder STW, Almondel Terrace, East Calder",STW,13291,River Almond,3001,yes
+2393,"River Almond, u/s of East Calder STW",US,13291,River Almond,3001,yes
+4654,"River Almond, 400m d/s East Calder STW",DS,13291,River Almond,3001,yes
+203594,"Newtonmore STW, Kingussie Rd, Newtonmore, PH20 1AY",STW,203594,River Spey,23142,yes
+533010,"River Spey, u/s of Newtonmore STW at Eilean na Cluanaich",US,203594,River Spey,23142,yes
+353449,R. Spey @ Aultaire Farm,DS,203594,River Spey,23142,yes
+13536,"Eccles STW, Kelso, TD5 7QS",STW,13536,River Tweed,5207,yes
+532975,"Eccles Burn, u/s of Eccles STW",US,13536,River Tweed,5207,yes
+9611,"Ecces Burn, d/s of Eccles STW",DS,13536,River Tweed,5207,yes
+300084,"Tarves STW, Ellon, Aberdeenshire, AB41 7JF",STW,300084,River Ythan,23241,yes
+207046,Youlie Burn u/s Tarves STW,US,300084,River Ythan,23241,yes
+207045,Youlie Burn d/s Tarves STW,DS,300084,River Ythan,23241,yes
+13689,"Cupar STW, Eden Valley Business Park, Cupar, KY15 4RB",STW,13689,River Eden,6200,no
+8170,RIVER EDEN U/S CUPAR STW,US,13689,River Eden,6200,no
+535740,RIVER EDEN AT SOUTH END OF REDHOUSE BRIDGE (RHB),DS,13689,River Eden,6200,no
+311323,"Drongan STW, Ayrshire, KA6 6HG",STW,311323,River Ayr,10422,yes
+122054,WATER OF COYLE AT MILLMANNOCH,US,311323,River Ayr,10422,yes
+122055,Water of Coyle at Downstream Drongan STW,DS,311323,River Ayr,10422,yes
+13217,"Bonnybridge STW, Roughmute, Falkirk, FK5 1NY",STW,13217,River Carron (Falkirk),4201,yes
+473430,RIVER CARRON U/S OF BONNY WATER CONFLUENCE,US,13217,River Carron (Falkirk),4201,yes
+1613,R CARRON @ OLD ROMAN BRIDGE,DS,13217,River Carron (Falkirk),4201,yes
+1626,BONNY WATER @ BOGTON,Trib1,13217,River Carron (Falkirk),4201,yes
+205340,"New Aberdour (W) STW, New Aberdour, Fraserburgh, AB43 6LD",STW,205340,Buchan Coastal,,yes
+533008,"Dour Burn, u/s of New Aberdour STW",US,205340,Buchan Coastal,,yes
+207144,Dour Burn d/s New Aberdour - B9031 Bridge,DS,205340,Buchan Coastal,,yes
+13774,"Kirriemuir STW, Logie, Kirriemuir, DD8 5PR",STW,13774,River Tay,6556,no
+8537,DEAN W. AT LOCHMILL,US,13774,River Tay,6556,no
+533034,"Dean water, u/s of Glamis Burn conf at footbridge",DS,13774,River Tay,6556,no
+533037,"Kerbet Water, u/s of Dean Water conf",Trib1,13774,River Tay,6556,no
+8598,GAIRIE B. AT MAINS OF BALLINDARG,Trib2,13774,River Tay,6556,no
+208934,"Carrbridge STW, Carr Rd, Carrbridge, PH23 3AE",STW,208934,River Spey,23106,yes
+535739,River Dulnain 60m u/s Carrbridge STW FE,US,208934,River Spey,23106,yes
+203655,R. Dulnain - d/s Carrbridge STW ,DS,208934,River Spey,23106,yes
+13243,"Torphichen STW, West Lothian, EH48 4NQ",STW,13243,River Avon,3100,no
+6097,BRUNTON BURN U/S EFFLUENT FROM TORPHICHEN STW,US,13243,River Avon,3100,no
+3858,BRUNTON BURN U/S A706 ROAD BRIDGE,DS,13243,River Avon,3100,no
+13791,"Pitlochry STW, Perth Road, Pitlochry, PH16 5LY",STW,13791,River Tay,6828,no
+8688,RIVER TUMMEL AT ALDOUR RD. BDG. PITLOCHRY,US,13791,River Tay,6828,no
+8689,RIVER TUMMEL D/S PITLOCHRY STW,DS,13791,River Tay,6828,no
+13208,"Torwood Village STW, Torwood, Falkirk, FK5 4SU",STW,13208,Forth Estuary (South) Coastal,3206,no
+7006,TOR BURN U/S TORWOOD STW DISCHARGE,US,13208,Forth Estuary (South) Coastal,3206,no
+3487,TOR BURN D/S TORWOOD VILLAGE,DS,13208,Forth Estuary (South) Coastal,3206,no
+125279,"Coalburn STW, Lanark, ML11 0NF",STW,125279,River Clyde,10097,yes
+532970,"Muir Burn, u/s of Coalburn STW",US,125279,River Clyde,10097,yes
+532971,"Muir Burn, d/s of Coalburn STW",DS,125279,River Clyde,10097,yes
+222288,"Stuartfield STW, Stuartfield, AB42 5DE",STW,222288,River Ugie,23230,yes
+538100,"SOUTH UGIE WATER (NOT MILL LADE) AT BRIDGE, E OF CHEVERTON",US,222288,River Ugie,23230,yes
+207233,SOUTH UGIE WATER D/S STUARTFIELD STW,DS,222288,River Ugie,23230,yes
