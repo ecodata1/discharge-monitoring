@@ -7,17 +7,17 @@ output: html_document
 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = F, comment = F,warning = F, cache = T, message = F)
+library(sepaTools)
+library(dplyr)
+library(broom)
+library(DT)
+knitr::opts_chunk$set(echo = F, comment = F,warning = F,  message = F)
 ```
 
 ## Samples
 
 
-```{r}
-
-library(sepaTools)
-library(dplyr)
-library(broom)
+```{r, cache = T}
 
 
   filePath <- "data/locations.csv"
@@ -41,16 +41,15 @@ results$DATE <- as.Date(results$DATE_TAKEN, "%d/%m/%y")
 
 result <- group_by(results, STW, SEASON, ANALYSIS, DETERMINAND) %>% mutate(COUNT = n())
 result <- ungroup(result)
-library(DT)
-group_by(result, LOCATION_CODE, LOCATION_DESCRIPTION.x, STW, SEASON, ANALYSIS_REPNAME) %>% summarize(COUNT = n()) %>%
-  DT::datatable()
+
+result_sum <- group_by(result, LOCATION_CODE, LOCATION_DESCRIPTION.x, STW, SEASON, ANALYSIS_REPNAME) %>% summarize(COUNT = n()) 
+  DT::datatable(result_sum)
 
 ```
 
 ## T-tests
 
-```{r}
-
+```{r t-tests}
 
 t_test <- lapply(split(result, result$STW), function(result) {
    
@@ -98,9 +97,9 @@ test$TYPE <- "ASPT"
  })
    
 aspt_tests <- bind_rows(t_test)
-all <- bind_rows(aspt_tests,ntaxa_tests )
+all <- bind_rows(aspt_tests, ntaxa_tests)
 
-  DT::datatable(all)
+DT::datatable(all)
 
 ```
 
