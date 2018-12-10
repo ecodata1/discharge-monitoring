@@ -21,6 +21,7 @@ List of tests per site per season. Up and downstream results only (excluding tri
 ```{r}
 filePath <- "data/locations.csv"
 locations <- read.csv(file = filePath) 
+locations <- filter(locations, SUITABILITY == "yes")
   
 results <-  getEcologyResults(locations = locations$LOCATION_CODE,
                                analysis = c("F_BMWP_TST",
@@ -34,7 +35,7 @@ results <-  getEcologyResults(locations = locations$LOCATION_CODE,
 results <-  inner_join(locations, results,by = "LOCATION_CODE")
 results$DATE <- as.Date(results$DATE_TAKEN, "%d/%m/%y")
 
-# filter and summarize up and downstream results only
+# filter and summarize up and downstream results only (not tribs)
 result <- filter(results, POSITION %in% c("DS","US"))
 result <- group_by(result, STW, SEASON, ANALYSIS, DETERMINAND) %>% mutate(COUNT = n())
 result <- ungroup(result)
@@ -84,8 +85,8 @@ t_test <- lapply(split(result, result$STW), function(result) {
    return(bind_rows(t_test))
 })
 all <- bind_rows(t_test)
-
-DT::datatable(all)
+all <- select(all, STW, TYPE, everything())
+DT::datatable(all ,rownames = F)
 
 ```
 
