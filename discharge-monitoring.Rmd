@@ -7,24 +7,22 @@ output: html_document
 
 
 ```{r setup, include=FALSE}
-library(sepaTools)
-library(dplyr)
-library(broom)
-library(DT)
-knitr::opts_chunk$set(echo = F, comment = F,warning = F,  message = F)
+library(sepaTools) # to get SEPA data
+library(dplyr) # for data manipulation
+library(broom) # tidy model outputs
+library(DT) # nice html tables
+knitr::opts_chunk$set(echo = F, comment = F, warning = F, message = F) # some option for presentations of html
 ```
 
-## Samples
+## Samples 
 
+List of tests per site per season. Up and downstream results only (excluding tributaries for now). This is to help spot missing samples:
 
-```{r, cache = T}
-
-
-  filePath <- "data/locations.csv"
-  locations <- read.csv(file = filePath) 
+```{r}
+filePath <- "data/locations.csv"
+locations <- read.csv(file = filePath) 
   
-
- results <-  getEcologyResults(locations = locations$LOCATION_CODE,
+results <-  getEcologyResults(locations = locations$LOCATION_CODE,
                                analysis = c("F_BMWP_TST",
                                             "F_BMWP_SUM",
                                             "SEW_FUNGUS",
@@ -34,70 +32,58 @@ knitr::opts_chunk$set(echo = F, comment = F,warning = F,  message = F)
 
  
 results <-  inner_join(locations, results,by = "LOCATION_CODE")
- 
-# WHPT NTAXA Abund, WHPT ASPT Abund, WHPT Score
-
 results$DATE <- as.Date(results$DATE_TAKEN, "%d/%m/%y")
 
-result <- group_by(results, STW, SEASON, ANALYSIS, DETERMINAND) %>% mutate(COUNT = n())
+# filter and summarize up and downstream results only
+result <- filter(results, POSITION %in% c("DS","US"))
+result <- group_by(result, STW, SEASON, ANALYSIS, DETERMINAND) %>% mutate(COUNT = n())
 result <- ungroup(result)
 
-result_sum <- group_by(result, LOCATION_CODE, LOCATION_DESCRIPTION.x, STW, SEASON, ANALYSIS_REPNAME) %>% summarize(COUNT = n()) 
-  DT::datatable(result_sum)
+result_sum <- group_by(result, LOCATION_CODE, LOCATION_DESCRIPTION.x, STW, SEASON, ANALYSIS_REPNAME) %>%
+  summarize(COUNT = length(unique(TEST_NUMBER))) 
+  DT::datatable(result_sum,rownames = F)
 
 ```
 
 ## T-tests
 
+Run pair-wise t-test for all samples. The 'pair' is defined as a sample taken up and downstream of a single Waste Water Treatment Works (WWTW) within the same season. Where multiple reps have been taken within a season, they are paired based on time/date.
+
+The Null hypothesis is that WHPT scores are great downstream than upstream. 
+
+
 ```{r t-tests}
 
-t_test <- lapply(split(result, result$STW), function(result) {
-   
-   upstream = result$VALUE[result$DETERMINAND == "WHPT NTAXA Abund" & 
-                         result$POSITION == "US" &
-                        result$COUNT %in% c(2,8)]
-
-downstream = result$VALUE[result$DETERMINAND == "WHPT NTAXA Abund" & 
-                   result$POSITION == "DS" &
-                      result$COUNT %in% c(2,8)]
-
-test <- NULL
-try(t_test <- t.test(downstream, upstream, var.equal = TRUE, paired = T, alternative = "l"))
-try(test <- tidy(t_test))
-test$STW <- unique(result$STW)
-
-test$TYPE <- "NTAXA"
-   
-
-   return(test)
- })
-   
-ntaxa_tests <- bind_rows(t_test)
-   
+# arrange by date taken so reps are pair-wised match on date/time taken.
+result <- arrange(result, DATE_TAKEN)
 
 t_test <- lapply(split(result, result$STW), function(result) {
-   
-   upstream = result$VALUE[result$DETERMINAND == "WHPT ASPT Abund" & 
-                         result$POSITION == "US" &
-                        result$COUNT %in% c(2,8)]
+ t_test <- lapply(c("WHPT NTAXA Abund","WHPT ASPT Abund"), function(WHPT) {
+    
+ 
+  upstream = result$VALUE[result$DETERMINAND == WHPT &
+  result$POSITION == "US" &
+  result$COUNT %in% c(2, 8)]
 
-downstream = result$VALUE[result$DETERMINAND == "WHPT ASPT Abund" & 
-                   result$POSITION == "DS" &
-                      result$COUNT %in% c(2,8)]
+  downstream = result$VALUE[result$DETERMINAND == WHPT &
+  result$POSITION == "DS" &
+  result$COUNT %in% c(2, 8)]
 
-test <- NULL
-try(t_test <- t.test(downstream, upstream, var.equal = TRUE, paired = T, alternative = "l"))
-try(test <- tidy(t_test))
-test$STW <- unique(result$STW)
+  test <- NULL
+  try(t_test <- t.test(downstream, 
+                     upstream, 
+                     var.equal = TRUE, 
+                     paired = T, 
+                     alternative = "l"))
+  try(test <- tidy(t_test))
+  test$STW <- unique(result$STW)
+  test$TYPE <- WHPT
 
-test$TYPE <- "ASPT"
-   
-
-   return(test)
- })
-   
-aspt_tests <- bind_rows(t_test)
-all <- bind_rows(aspt_tests, ntaxa_tests)
+  return(test)
+})
+   return(bind_rows(t_test))
+})
+all <- bind_rows(t_test)
 
 DT::datatable(all)
 
