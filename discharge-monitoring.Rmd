@@ -19,10 +19,12 @@ knitr::opts_chunk$set(echo = F, comment = F, warning = F, message = F) # some op
 List of tests per site per season. Up and downstream results only (excluding tributaries for now). This is to help spot missing samples:
 
 ```{r}
+# load manually compliled list of discharge monitoring sites
+
 filePath <- "data/locations.csv"
 locations <- read.csv(file = filePath) 
 locations <- filter(locations, SUITABILITY == "yes")
-  
+
 results <-  getEcologyResults(locations = locations$LOCATION_CODE,
                                analysis = c("F_BMWP_TST",
                                             "F_BMWP_SUM",
