@@ -23,18 +23,25 @@ List of tests per site per season. Up and downstream results only (excluding tri
 
 filePath <- "data/locations.csv"
 locations <- read.csv(file = filePath) 
-locations <- filter(locations, SUITABILITY == "yes")
 
+# 555789
+# get results for discharge monitoring only (sometimes other monitoring going on at same site)
 results <-  getEcologyResults(locations = locations$LOCATION_CODE,
                                analysis = c("F_BMWP_TST",
-                                            "F_BMWP_SUM",
-                                            "SEW_FUNGUS",
-                                            "SURVEY_INV"),
+                                            "F_BMWP_SUM"
+                                          ),
                                startDate = "01-MARCH-2018",
                                endDate = "01-NOV-2018")
-
+# get associated analyses for these sample numbers
+associated <-  getEcologyResults(sampleNumber = unique(results$SAMPLE_NUMBER),
+                               analysis = c("SEW_FUNGUS",
+                                            "SURVEY_INV"
+                                          ),
+                               startDate = "01-MARCH-2018",
+                               endDate = "01-NOV-2018")
+results <- bind_rows(results, associated)
  
-results <-  inner_join(locations, results,by = "LOCATION_CODE")
+results <-  inner_join(locations, results,by = c("LOCATION_CODE"))
 results$DATE <- as.Date(results$DATE_TAKEN, "%d/%m/%y")
 
 # filter and summarize up and downstream results only (not tribs)
@@ -42,22 +49,23 @@ result <- filter(results, POSITION %in% c("DS","US"))
 result <- group_by(result, STW, SEASON, ANALYSIS, DETERMINAND) %>% mutate(COUNT = n())
 result <- ungroup(result)
 
-
-# result %>% 
-#     mutate(group_id = group_indices(., personal_id))
+# arrange by date taken so reps are pair-wised match on date/time taken.
+result <- arrange(result, DATE_TAKEN)
 
 # number the reps
-# 
-# result <- group_by(result, STW, SEASON, LOCATION_CODE, SAMPLE_NUMBER)
-# data %>% group_indices(result, SAMPLE_NUMBER) 
-# 
-# result <- lapply(split(result, result$LOCATION_CODE), function(reps) {
-#   
-#   
-#   reps <<- reps
-#   stop(reps)
-#   
-# })
+rep_count <- result %>% select(SAMPLE_NUMBER, SEASON, LOCATION_CODE)
+rep_count <-  lapply(split(rep_count, rep_count$LOCATION_CODE), function(location) {
+  result <-  lapply(split(location, location$SEASON), function(season) {
+     season <-  mutate(season, REP = group_indices(season, SAMPLE_NUMBER))
+     return(season)
+     })
+     
+   result <- bind_rows(result)
+   return(result)
+   })
+rep_count <- unique(bind_rows(rep_count))
+   
+result <- inner_join(result, rep_count ,by = c("SAMPLE_NUMBER","SEASON","LOCATION_CODE"))
 
 
 result_sum <- group_by(result, LOCATION_CODE, LOCATION_DESCRIPTION.x, STW, SEASON, ANALYSIS_REPNAME) %>%
@@ -84,11 +92,13 @@ t_test <- lapply(split(result, result$STW), function(result) {
    
   upstream <- result$VALUE[result$DETERMINAND == WHPT &
   result$POSITION == "US" &
-  result$COUNT %in% c(2, 8)]
+  result$COUNT %in% c(2, 8) &
+  result$REP == 1]
 
   downstream <- result$VALUE[result$DETERMINAND == WHPT &
   result$POSITION == "DS" &
-  result$COUNT %in% c(2, 8)]
+  result$COUNT %in% c(2, 8) &
+  result$REP == 1]
 
   test <- NULL
   try(t_test <- t.test(downstream, 
@@ -107,6 +117,46 @@ t_test <- lapply(split(result, result$STW), function(result) {
 all <- bind_rows(t_test)
 all <- select(all, STW, TYPE, everything())
 DT::datatable(all ,rownames = F)
+
+```
+
+## Reps
+
+T-test for reps only, unpaired.
+
+```{r}
+
+t_test <- lapply(split(result, result$STW), function(result) {
+ t_test <- lapply(c("WHPT NTAXA Abund","WHPT ASPT Abund"), function(WHPT) {
+ 
+   
+  upstream <- result$VALUE[result$DETERMINAND == WHPT &
+  result$POSITION == "US" &
+  result$COUNT == 8]
+
+  downstream <- result$VALUE[result$DETERMINAND == WHPT &
+  result$POSITION == "DS" &
+  result$COUNT == 8 ]
+  
+  
+  test <- NULL
+  try(t_test <- t.test(downstream, 
+                     upstream, 
+                     var.equal = TRUE, 
+                     paired = F, 
+                     alternative = "l"))
+  try(test <- tidy(t_test))
+  test$STW <- unique(result$STW)
+  test$TYPE <- WHPT
+
+  return(test)
+})
+   return(bind_rows(t_test))
+})
+reps <- bind_rows(t_test)
+reps <- select(reps, STW, TYPE, everything())
+DT::datatable(reps, rownames = F)
+
 
 ```
 
