@@ -40,6 +40,24 @@ result <- filter(results, POSITION %in% c("DS","US"))
 result <- group_by(result, STW, SEASON, ANALYSIS, DETERMINAND) %>% mutate(COUNT = n())
 result <- ungroup(result)
 
+
+# result %>% 
+#     mutate(group_id = group_indices(., personal_id))
+
+# number the reps
+# 
+# result <- group_by(result, STW, SEASON, LOCATION_CODE, SAMPLE_NUMBER)
+# data %>% group_indices(result, SAMPLE_NUMBER) 
+# 
+# result <- lapply(split(result, result$LOCATION_CODE), function(reps) {
+#   
+#   
+#   reps <<- reps
+#   stop(reps)
+#   
+# })
+
+
 result_sum <- group_by(result, LOCATION_CODE, LOCATION_DESCRIPTION.x, STW, SEASON, ANALYSIS_REPNAME) %>%
   summarize(COUNT = length(unique(TEST_NUMBER))) 
   DT::datatable(result_sum,rownames = F)
@@ -60,8 +78,8 @@ result <- arrange(result, DATE_TAKEN)
 
 t_test <- lapply(split(result, result$STW), function(result) {
  t_test <- lapply(c("WHPT NTAXA Abund","WHPT ASPT Abund"), function(WHPT) {
-    
  
+   
   upstream <- result$VALUE[result$DETERMINAND == WHPT &
   result$POSITION == "US" &
   result$COUNT %in% c(2, 8)]
