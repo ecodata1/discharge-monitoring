@@ -62,11 +62,11 @@ t_test <- lapply(split(result, result$STW), function(result) {
  t_test <- lapply(c("WHPT NTAXA Abund","WHPT ASPT Abund"), function(WHPT) {
     
  
-  upstream = result$VALUE[result$DETERMINAND == WHPT &
+  upstream <- result$VALUE[result$DETERMINAND == WHPT &
   result$POSITION == "US" &
   result$COUNT %in% c(2, 8)]
 
-  downstream = result$VALUE[result$DETERMINAND == WHPT &
+  downstream <- result$VALUE[result$DETERMINAND == WHPT &
   result$POSITION == "DS" &
   result$COUNT %in% c(2, 8)]
 
